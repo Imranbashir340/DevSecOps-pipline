@@ -1,0 +1,58 @@
+name: Simple CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      # 🐳 Build Image
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest .
+
+      # 🛡️ Trivy Scan
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget -y
+          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.70.0_Linux-64bit.deb
+          sudo dpkg -i trivy_0.70.0_Linux-64bit.deb
+
+      - name: Scan Image
+        run: |
+          trivy image ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+
+      # 📤 Push to Docker Hub
+      - name: Login Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+
+  deploy:
+    needs: build-scan-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+            docker stop myapp || true
+            docker rm myapp || true
+            docker run -d -p 80:80 --name myapp ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
