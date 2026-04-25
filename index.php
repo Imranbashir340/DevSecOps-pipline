@@ -302,7 +302,7 @@
     <div class="dashboard">
         <header>
             <div class="brand">
-                <h1><i class="fas fa-microchip"></i> DevSecOps Shield</h1>
+                <h1><i class="fas fa-microchip"></i> DevSecOps Shield -imran</h1>
                 <p>Enterprise Pipeline Monitoring & Intelligence</p>
             </div>
             <div class="status-panel">
