@@ -1,3 +1,3 @@
 <?php
-echo "Hello from CI/CD Docker App 🚀";
+echo "Hello from CI/CD Docker App v2.0 🚀";
 ?>
