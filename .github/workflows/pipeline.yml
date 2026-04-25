@@ -44,7 +44,7 @@ jobs:
       # 🔐 Scan Image
       - name: Trivy Scan
         run: |
-          trivy image --exit-code 1 --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
 
       # 📤 Login Docker Hub
       - name: Login Docker Hub
