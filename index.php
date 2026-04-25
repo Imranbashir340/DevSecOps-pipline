@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevSecOps Ultimate Dashboard</title>
+    <title>Image App Ultimate Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;800&display=swap" rel="stylesheet">
@@ -302,7 +302,7 @@
     <div class="dashboard">
         <header>
             <div class="brand">
-                <h1><i class="fas fa-microchip"></i> DevSecOps  Shield -imran</h1>
+                <h1><i class="fas fa-microchip"></i> Image App  Shield -imran</h1>
                 <p>Enterprise Pipeline Monitoring & Intelligence</p>
             </div>
             <div class="status-panel">
@@ -360,12 +360,12 @@
             <div><span class="text-green">✔</span> Trivy Security Scan: 0 Vulnerabilities</div>
             <div><span class="text-green">✔</span> Deployment Successful</div>
             <div style="margin-top: 10px; color: #8b949e;">
-                <?php echo ">>> " . "Hello from CI/CD Docker App High-Performance Unit 🚀"; ?>
+                <?php echo ">>> " . "Hello from Image App High-Performance Unit 🚀"; ?>
             </div>
         </div>
 
         <div class="footer">
-            <a href="https://github.com/Imranbashir340/DevSecOps-pipline" class="deploy-btn" target="_blank">
+            <a href="https://github.com/Imranbashir340/Image App-pipline" class="deploy-btn" target="_blank">
                 <i class="fab fa-github"></i> View Repository
             </a>
         </div>

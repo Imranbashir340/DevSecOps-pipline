@@ -25,7 +25,7 @@ jobs:
         uses: sonarsource/sonarqube-scan-action@v2
         with:
           args: >
-            -Dsonar.projectKey=my-php-app
+            -Dsonar.projectKey=image-app
             -Dsonar.sources=.
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
       # 🐳 Build Image
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/image-app:latest .
 
       # 🛡️ Install Trivy
       - name: Install Trivy
@@ -44,7 +44,7 @@ jobs:
       # 🔐 Scan Image
       - name: Trivy Scan
         run: |
-          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/image-app:latest
 
       # 📤 Login Docker Hub
       - name: Login Docker Hub
@@ -53,7 +53,7 @@ jobs:
       # 🚀 Push Image
       - name: Push Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/image-app:latest
 
   deploy:
     needs: build-scan-push
@@ -67,7 +67,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/image-app:latest
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d -p 80:80 --name myapp ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+            docker run -d -p 80:80 --name myapp ${{ secrets.DOCKER_USERNAME }}/image-app:latest
