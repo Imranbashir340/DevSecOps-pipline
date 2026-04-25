@@ -67,6 +67,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_KEY }}
           script: |
+            docker system prune -f
             docker pull ${{ secrets.DOCKER_USERNAME }}/image-app:latest
             docker stop myapp || true
             docker rm myapp || true
