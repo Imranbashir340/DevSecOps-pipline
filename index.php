@@ -355,8 +355,9 @@
 
         <div class="code-display">
             <div><span class="text-purple">$</span> git push origin main</div>
-            <div><span class="text-cyan">Enumerating objects:</span> 5, done.</div>
-            <div><span class="text-cyan">Counting objects:</span> 100% (5/5), done.</div>
+            <div><span class="text-cyan">Scanning project:</span> sonar-scanner -Dsonar.projectKey=my-php-app</div>
+            <div><span class="text-green">✔</span> SonarQube Quality Gate Passed</div>
+            <div><span class="text-green">✔</span> Trivy Security Scan: 0 Vulnerabilities</div>
             <div><span class="text-green">✔</span> Deployment Successful</div>
             <div style="margin-top: 10px; color: #8b949e;">
                 <?php echo ">>> " . "Hello from CI/CD Docker App High-Performance Unit 🚀"; ?>

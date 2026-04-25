@@ -1,44 +1,59 @@
-name: Simple CI/CD Pipeline
+name: DevSecOps CI/CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   build-scan-push:
     runs-on: ubuntu-latest
 
     steps:
+      # 📥 Checkout
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v4
+      # ☕ SonarQube requires Java
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 🔍 SonarQube Scan (CODE LEVEL)
+      - name: SonarQube Scan
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner-cli-*.zip
+          sudo mv sonar-scanner-* /opt/sonar-scanner
+          export PATH=$PATH:/opt/sonar-scanner/bin
+
+          sonar-scanner \
+            -Dsonar.projectKey=my-php-app \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       # 🐳 Build Image
       - name: Build Docker Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest .
 
-      # 🛡️ Trivy Scan
+      # 🛡️ Install Trivy (correct way)
       - name: Install Trivy
         run: |
-          sudo apt-get update
-          sudo apt-get install wget -y
-          wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_0.70.0_Linux-64bit.deb
-          sudo dpkg -i trivy_0.70.0_Linux-64bit.deb
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
-      - name: Scan Image
+      # 🔐 Scan Docker Image
+      - name: Trivy Scan
         run: |
-          trivy image ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
+          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
 
-      # 📤 Push to Docker Hub
+      # 📤 Docker Login
       - name: Login Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      # 🚀 Push Image
       - name: Push Image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/my-php-app:latest
