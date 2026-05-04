@@ -242,6 +242,43 @@ body{
         <div class="line green">✔ Deployment successful</div>
 
     </div>
+    <div class="security">
+
+    <h3>SonarQube Issues Report</h3>
+
+    <div style="margin-top:12px;font-family:monospace;font-size:13px">
+
+        <div class="line red">
+            ❌ [CRITICAL] SQL Injection detected → auth.php:45
+        </div>
+
+        <div class="line red">
+            ❌ [CRITICAL] Hardcoded credentials found → config.php:12
+        </div>
+
+        <div class="line yellow">
+            ⚠ [MAJOR] XSS vulnerability → dashboard.js:88
+        </div>
+
+        <div class="line yellow">
+            ⚠ [MAJOR] Unvalidated input → api/user.php:34
+        </div>
+
+        <div class="line yellow">
+            ⚠ [MINOR] Unused variable detected → utils.php:21
+        </div>
+
+        <div class="line green">
+            ✔ Code Smells: 2 fixed
+        </div>
+
+        <div class="line cyan">
+            ℹ Maintainability Rating: B
+        </div>
+
+    </div>
+
+</div>
 
     <!-- BUTTON -->
     <div class="footer">
