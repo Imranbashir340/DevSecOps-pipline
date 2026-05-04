@@ -18,6 +18,8 @@
     --primary:#00f2fe;
     --accent:#7c3aed;
     --success:#00ff88;
+    --danger:#ff4b2b;
+    --warning:#ffb800;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -32,10 +34,7 @@ body{
 }
 
 /* Container */
-.dashboard{
-    width:100%;
-    max-width:1100px;
-}
+.dashboard{width:100%;max-width:1100px}
 
 /* Header */
 .header{
@@ -64,7 +63,7 @@ body{
     font-size:12px;
 }
 
-/* Grid */
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -85,10 +84,7 @@ body{
     border-color:var(--primary);
 }
 
-.card i{
-    color:var(--primary);
-    margin-bottom:10px;
-}
+.card i{color:var(--primary);margin-bottom:10px}
 
 .card h3{
     font-size:13px;
@@ -101,15 +97,14 @@ body{
     font-weight:700;
 }
 
-/* Security */
+.green{color:var(--success)}
+
+/* SECURITY */
 .security{
     background:linear-gradient(145deg,rgba(124,58,237,0.1),transparent);
     border:1px solid rgba(124,58,237,0.2);
     padding:20px;
     border-radius:16px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
     margin-bottom:25px;
 }
 
@@ -118,17 +113,17 @@ body{
     height:8px;
     background:#1f2937;
     border-radius:10px;
-    margin-top:10px;
     overflow:hidden;
+    margin-top:10px;
 }
 
 .fill{
-    width:92%;
     height:100%;
+    width:78%;
     background:linear-gradient(90deg,var(--primary),var(--success));
 }
 
-/* Terminal */
+/* TERMINAL */
 .terminal{
     background:#0a0d12;
     border:1px solid var(--border);
@@ -143,8 +138,10 @@ body{
 .green{color:var(--success)}
 .cyan{color:var(--primary)}
 .purple{color:var(--accent)}
+.red{color:var(--danger)}
+.yellow{color:var(--warning)}
 
-/* Button */
+/* BUTTON */
 .btn{
     display:inline-flex;
     gap:10px;
@@ -158,13 +155,9 @@ body{
     transition:0.2s;
 }
 
-.btn:hover{
-    transform:scale(1.05);
-}
+.btn:hover{transform:scale(1.05)}
 
-.footer{
-    text-align:center;
-}
+.footer{text-align:center}
 </style>
 </head>
 
@@ -172,18 +165,19 @@ body{
 
 <div class="dashboard">
 
-    <!-- Header -->
+    <!-- HEADER -->
     <div class="header">
         <div class="title">
             <h1><i class="fas fa-shield-halved"></i> DevSecOps Dashboard</h1>
-            <p>CI/CD • SonarQube • Docker • Security Pipeline</p>
+            <p>CI/CD • SonarQube • Trivy • Docker Security Pipeline</p>
         </div>
 
         <div class="badge">LIVE SYSTEM</div>
     </div>
 
-    <!-- Metrics -->
+    <!-- METRICS -->
     <div class="grid">
+
         <div class="card">
             <i class="fas fa-bolt"></i>
             <h3>Build Time</h3>
@@ -199,7 +193,10 @@ body{
         <div class="card">
             <i class="fas fa-bug"></i>
             <h3>Vulnerabilities</h3>
-            <div class="value">0</div>
+            <div class="value" style="color:var(--danger)">3</div>
+            <p style="font-size:11px;color:var(--muted);margin-top:6px">
+                1 High • 1 Medium • 1 Low
+            </p>
         </div>
 
         <div class="card">
@@ -207,31 +204,50 @@ body{
             <h3>Image Version</h3>
             <div class="value">v2.1</div>
         </div>
+
     </div>
 
-    <!-- Security -->
+    <!-- SECURITY -->
     <div class="security">
-        <div>
-            <h3>Security Score</h3>
-            <div class="progress"><div class="fill"></div></div>
+
+        <h3>Security Score Overview</h3>
+
+        <div class="progress"></div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--muted)">
+            <span>Score: 78/100</span>
+            <span>
+                <span style="color:var(--danger)">1 High</span> •
+                <span style="color:var(--warning)">2 Medium</span> •
+                <span style="color:var(--success)">5 Low</span>
+            </span>
         </div>
-        <div style="font-size:22px;font-weight:700;color:var(--success)">92%</div>
+
     </div>
 
-    <!-- Terminal -->
+    <!-- TERMINAL -->
     <div class="terminal">
+
         <div class="line"><span class="purple">$</span> git push origin main</div>
-        <div class="line cyan">Running SonarQube scan...</div>
-        <div class="line green">✔ Quality Gate Passed</div>
-        <div class="line green">✔ Trivy Scan Clean</div>
-        <div class="line green">✔ Deployment Successful</div>
+
+        <div class="line cyan">[SONARQUBE] Analysis started...</div>
+
+        <div class="line red">✖ SQL Injection found in auth.php (HIGH)</div>
+        <div class="line yellow">⚠ XSS vulnerability in dashboard.js (MEDIUM)</div>
+        <div class="line yellow">⚠ Outdated dependency lodash@4.17 (MEDIUM)</div>
+
+        <div class="line green">✔ Trivy container scan passed</div>
+        <div class="line green">✔ Docker image has no critical CVEs</div>
+
+        <div class="line green">✔ Deployment successful</div>
+
     </div>
 
-    <!-- Button -->
+    <!-- BUTTON -->
     <div class="footer">
         <a class="btn" href="#">
             <i class="fab fa-github"></i>
-            View Repo
+            View Repository
         </a>
     </div>
 
